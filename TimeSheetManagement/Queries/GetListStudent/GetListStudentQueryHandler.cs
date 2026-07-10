@@ -29,6 +29,15 @@ namespace TimeSheetManagement.Queries.GetListStudent
             var pageSize = request.PageSize <= 0 ? 20 : request.PageSize;
             var students = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
 
+            // Load the active classroom enrolments for the students on this page so the client
+            // can pre-populate the "classes" field when editing.
+            var studentIds = students.Select(s => s.Id).ToList();
+            var enrolments = await _unitOfWork.StudentClasses
+                .GetListByConditionAsync(x => x.IsActive && studentIds.Contains(x.StudentId));
+            var classIdsByStudent = enrolments
+                .GroupBy(x => x.StudentId)
+                .ToDictionary(g => g.Key, g => g.Select(e => e.ClassId).ToList());
+
             return new PagedResult<GetListStudentQueryResult>
             {
                 Items = students.Select(s => new GetListStudentQueryResult
@@ -36,7 +45,8 @@ namespace TimeSheetManagement.Queries.GetListStudent
                     Id = s.Id,
                     Name = s.Name,
                     Grade = s.Grade,
-                    Review = s.Review
+                    Review = s.Review,
+                    ClassroomIds = classIdsByStudent.TryGetValue(s.Id, out var ids) ? ids : new List<Guid>()
                 }).ToList(),
                 Page = page,
                 PageSize = pageSize,

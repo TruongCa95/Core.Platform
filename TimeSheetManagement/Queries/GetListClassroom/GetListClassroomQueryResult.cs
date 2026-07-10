@@ -12,5 +12,7 @@
 
         public int NumberOfStudent {  get; set; }
 
+        public int Level { get; set; }
+
     }
 }

@@ -37,7 +37,8 @@ namespace TimeSheetManagement.Queries.GetListClassroom
                     ClassCode = x.ClassCode,
                     ClassName = x.ClassName,
                     Location = x.Location,
-                    NumberOfStudent = x.NumberOfStudent
+                    NumberOfStudent = x.NumberOfStudent,
+                    Level = (int)x.Level
                 }).ToList(),
                 Page = page,
                 PageSize = pageSize,

@@ -9,5 +9,7 @@
         public string Grade { get; set; } = string.Empty;
 
         public string Review {  get; set; } = string.Empty;
+
+        public List<Guid> ClassroomIds { get; set; } = new List<Guid>();
     }
 }
