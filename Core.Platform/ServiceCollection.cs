@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using TimeSheetManagement.Behaviors;
 
 namespace Core.Platform
 {
@@ -6,8 +7,11 @@ namespace Core.Platform
     {
         public static IServiceCollection AddMediatRServices(this IServiceCollection services)
         {
-            //services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("PosterManagement")));
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("TimeSheetManagement")));
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(Assembly.Load("TimeSheetManagement"));
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            });
             return services;
         }
     }

@@ -51,8 +51,9 @@ namespace TimeSheetManagement.Services
         {
             return ki switch
             {
-                KiEnums.APlus => 1.25m,
-                KiEnums.A => 1.1m,
+                KiEnums.APlus => 1.4m,
+                KiEnums.A => 1.25m,
+                KiEnums.BPlus => 1.1m,
                 KiEnums.C => 0.8m,
                 KiEnums.D => 0.5m,
                 _ => 1.0m,

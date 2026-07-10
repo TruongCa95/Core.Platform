@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Repositories;
+﻿using Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimeSheetManagement.Helper;
@@ -17,7 +12,7 @@ namespace TimeSheetManagement.Commands.UpdateTimesheet
         public UpdateTimesheetCommandHandler(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
         public async Task<bool> Handle(UpdateTimesheetCommand request, CancellationToken cancellationToken)
         {
-            var timesheet = await _unitOfWork.TimeSheets.GetListByCondition(x => x.IsActive &&  x.Id == request.Id).FirstOrDefaultAsync();
+            var timesheet = await _unitOfWork.TimeSheets.GetListByCondition(x => x.IsActive &&  x.Id == request.Id).FirstOrDefaultAsync(cancellationToken);
             if (timesheet != null)
             {
                 timesheet.UpdatedDate = DateTime.UtcNow;
@@ -31,9 +26,7 @@ namespace TimeSheetManagement.Commands.UpdateTimesheet
             else
             {
                 return false;
-                throw new KeyNotFoundException();
             }
-
         }
     }
 }

@@ -5,7 +5,7 @@ using TimeSheetManagement.DTO;
 
 namespace TimeSheetManagement.Queries.GetListTimesheet
 {
-    public class GetListTimesheetQueryHandler : IRequestHandler<GetListTimesheetQuery, GetListTimesheetQueryResult>
+    public class GetListTimesheetQueryHandler : IRequestHandler<GetListTimesheetQuery, PagedTimesheetResult>
     {
         private readonly IUnitOfWork _unitOfWork;
         public GetListTimesheetQueryHandler(IUnitOfWork unitOfWork)
@@ -13,7 +13,7 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetListTimesheetQueryResult> Handle(GetListTimesheetQuery request, CancellationToken cancellationToken)
+        public async Task<PagedTimesheetResult> Handle(GetListTimesheetQuery request, CancellationToken cancellationToken)
         {
             var timesheets = await _unitOfWork.ClassRoomTimeSheets
                  .GetListByCondition(x => x.TimeSheetId.HasValue)
@@ -42,12 +42,11 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                                     Progress = r.Progress
                                 }).ToList()
                             })
-                 .ToListAsync();
+                 .ToListAsync(cancellationToken);
 
             var salaries = await _unitOfWork.Salaries.GetListByConditionAsync(s => s.IsActive);
 
-            // Parse month and year from request
-            string reqMonth = request.Month;
+            string? reqMonth = request.Month;
             int? reqYear = request.Year;
 
             // Only filter if at least one is provided
@@ -141,9 +140,18 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                 })
                 .ToList();
 
-            return new GetListTimesheetQueryResult
+            var page = request.Page <= 0 ? 1 : request.Page;
+            var pageSize = request.PageSize <= 0 ? 20 : request.PageSize;
+            var totalCount = groupedResult.Count;
+            var pagedResults = groupedResult.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            return new PagedTimesheetResult
             {
-                Results = groupedResult,
+                Results = pagedResults,
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
             };
         }
     }
