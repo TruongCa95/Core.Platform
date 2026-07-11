@@ -4,6 +4,12 @@ namespace TimeSheetManagement.DTO
 {
     public class TimeSheetDTO
     {
+        public Guid Id { get; set; }
+
+        public Guid ClassroomId { get; set; }
+
+        public string Description { get; set; } = string.Empty;
+
         public string Classcode { get; set; } = string.Empty;
         public DateTime Date { get; set; }
 

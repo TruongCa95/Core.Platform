@@ -7,6 +7,7 @@ using TimeSheetManagement.Commands.CreateStudents;
 using TimeSheetManagement.Commands.CreateTimeSheets;
 using TimeSheetManagement.Commands.DeleteClassroom;
 using TimeSheetManagement.Commands.DeleteStudent;
+using TimeSheetManagement.Commands.DeleteTimesheet;
 using TimeSheetManagement.Commands.UpdateClassrooms;
 using TimeSheetManagement.Commands.UpdateStudents;
 using TimeSheetManagement.Commands.UpdateTimesheet;
@@ -62,6 +63,13 @@ namespace Core.Platform.Controllers
             }
 
             var result = await _command.Send(command);
+            return result ? Ok(true) : NotFound();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTimeSheet([FromRoute] Guid id)
+        {
+            var result = await _command.Send(new DeleteTimesheetByIdCommand { Id = id });
             return result ? Ok(true) : NotFound();
         }
 

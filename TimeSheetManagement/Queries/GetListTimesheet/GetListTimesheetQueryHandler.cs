@@ -30,6 +30,9 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                             rev => rev.TimesheetId,
                             (t, revs) => new
                             {
+                                TimesheetId = t.tr.ts.Id,
+                                ClassroomId = t.cls.Id,
+                                Description = t.tr.ts.Description,
                                 t.tr.ts.Date,
                                 t.tr.r.NumberOfStudent,
                                 Level = t.cls.Level,
@@ -111,6 +114,9 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                     var allowance = t.ClassCode.StartsWith("VLB") ? 50000 : 0;
                     return new TimeSheetDTO
                     {
+                        Id = t.TimesheetId,
+                        ClassroomId = t.ClassroomId,
+                        Description = t.Description,
                         Classcode = t.ClassCode,
                         Date = t.Date,
                         NumberOfStudent = t.NumberOfStudent,

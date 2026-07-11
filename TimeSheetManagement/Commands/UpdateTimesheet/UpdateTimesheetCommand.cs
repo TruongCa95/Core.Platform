@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TimeSheetManagement.DTO;
 
 namespace TimeSheetManagement.Commands.UpdateTimesheet
 {
@@ -10,6 +11,8 @@ namespace TimeSheetManagement.Commands.UpdateTimesheet
 
         public DateTime Date {  get; set; }
 
+        public List<ClassroomDTO> Classrooms { get; set; } = new List<ClassroomDTO>();
 
+        public List<TimesheetReviewDTO> TimesheetReviews { get; set; } = new List<TimesheetReviewDTO>();
     }
 }
