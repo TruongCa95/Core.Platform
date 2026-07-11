@@ -24,6 +24,7 @@ namespace TimeSheetManagement.Queries.GetListClassroom
                 ClassCode = classroom.ClassCode,
                 ClassName = classroom.ClassName,
                 NumberOfStudent = classroom.NumberOfStudent,
+                Status = (int)classroom.Status,
             };
         }
     }

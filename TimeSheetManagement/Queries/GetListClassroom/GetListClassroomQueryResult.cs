@@ -14,5 +14,7 @@
 
         public int Level { get; set; }
 
+        public int Status { get; set; }
+
     }
 }

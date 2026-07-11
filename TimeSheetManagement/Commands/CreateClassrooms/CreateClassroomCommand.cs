@@ -16,6 +16,7 @@ namespace TimeSheetManagement.Commands.CreateClassroom
 
         public int NumberOfStudent { get; set; } = 1;
 
+        public ClassRoomStatusEnums Status { get; set; } = ClassRoomStatusEnums.Active;
 
     }
 }

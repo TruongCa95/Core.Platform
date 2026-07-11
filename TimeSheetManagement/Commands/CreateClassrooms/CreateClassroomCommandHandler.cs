@@ -27,7 +27,8 @@ namespace TimeSheetManagement.Commands.CreateClassroom
                 ClassName = request.ClassName,
                 NumberOfStudent = request.NumberOfStudent,
                 Location = request.Location,
-                Level = request.Level
+                Level = request.Level,
+                Status = request.Status
             };
 
             await _unitOfWork.Classrooms.AddAsync(classroom);

@@ -9,5 +9,7 @@
         public string ClassCode { get; set; } = string.Empty;
 
         public int NumberOfStudent {  get; set; }
+
+        public int Status { get; set; }
     }
 }

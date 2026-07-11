@@ -16,5 +16,7 @@ namespace TimeSheetManagement.Commands.UpdateClassrooms
         public int NumberOfStudent { get; set; }
 
         public LevelEnums Level { get; set; }
+
+        public ClassRoomStatusEnums Status { get; set; } = ClassRoomStatusEnums.Active;
     }
 }

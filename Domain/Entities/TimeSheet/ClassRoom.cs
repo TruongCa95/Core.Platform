@@ -14,6 +14,8 @@ namespace Domain.Entities.TimeSheet
 
         public LevelEnums Level { get; set; }
 
+        public ClassRoomStatusEnums Status { get; set; } = ClassRoomStatusEnums.Active;
+
         public ICollection<TimeSheet> TimeSheets { get; set; } = new List<TimeSheet>();
 
         public ICollection<Students> Students { get; set; } = new List<Students>();

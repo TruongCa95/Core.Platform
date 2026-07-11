@@ -37,6 +37,7 @@ namespace TimeSheetManagement.Commands.UpdateClassrooms
             classroom.Location = request.Location ?? string.Empty;
             classroom.NumberOfStudent = request.NumberOfStudent;
             classroom.Level = request.Level;
+            classroom.Status = request.Status;
             classroom.UpdatedDate = DateTime.UtcNow;
 
             await _unitOfWork.Classrooms.UpdateAsync(classroom);

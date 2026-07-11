@@ -24,6 +24,9 @@ namespace TimeSheetManagement.Validators
 
             RuleFor(x => x.Level)
                 .IsInEnum().WithMessage("Invalid level.");
+
+            RuleFor(x => x.Status)
+                .IsInEnum().WithMessage("Invalid status.");
         }
     }
 }
