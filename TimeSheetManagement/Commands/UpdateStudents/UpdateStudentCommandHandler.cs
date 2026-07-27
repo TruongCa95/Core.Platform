@@ -1,4 +1,4 @@
-﻿using Domain.Entities.TimeSheet;
+using Domain.Entities.TimeSheet;
 using Domain.Repositories;
 using MediatR;
 

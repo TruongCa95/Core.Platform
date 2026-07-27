@@ -15,7 +15,6 @@ namespace TimeSheetManagement.Validators
                 .MaximumLength(100).WithMessage("Student name cannot exceed 100 characters.");
 
             RuleFor(x => x.Grade)
-                .NotEmpty().WithMessage("Grade is required.")
                 .MaximumLength(50).WithMessage("Grade cannot exceed 50 characters.");
 
             RuleFor(x => x.Review)

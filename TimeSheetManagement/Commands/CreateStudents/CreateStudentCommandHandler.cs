@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -28,19 +28,22 @@ namespace TimeSheetManagement.Commands.CreateStudents
                 
             var student = new Students
             {
-                Grade = request.Grade,
-                Review = request.Review,
+                Grade = request.Grade ?? string.Empty,
+                Review = request.Review ?? string.Empty,
                 Name = request.Name,
             };
 
             await _unitOfWork.Students.AddAsync(student);
-            var relationship = request.ClassroomIds.Select(x => new StudentClasses
+            if (request.ClassroomIds != null && request.ClassroomIds.Any())
             {
-                StudentId = student.Id,
-                ClassId = x
-            });
+                var relationship = request.ClassroomIds.Distinct().Select(x => new StudentClasses
+                {
+                    StudentId = student.Id,
+                    ClassId = x
+                });
 
-            await _unitOfWork.StudentClasses.AddRangeAsync(relationship);
+                await _unitOfWork.StudentClasses.AddRangeAsync(relationship);
+            }
             await _unitOfWork.CompleteAsync();
             return student.Id;
         }

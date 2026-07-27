@@ -1,4 +1,4 @@
-﻿using Domain.Repositories;
+using Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimeSheetManagement.Queries.GetListTimesheet;
@@ -14,7 +14,7 @@ namespace TimeSheetManagement.Queries.GetListStudent
         }
         public async Task<PagedResult<GetListStudentQueryResult>> Handle(GetListStudentQuery request, CancellationToken cancellationToken)
         {
-            var query = _unitOfWork.Students.GetListByCondition(x => x.IsActive)
+            var query = _unitOfWork.Students.GetListByCondition(x => true)
                 .OrderByDescending(x => x.CreatedDate)
                 .AsQueryable();
 
@@ -46,6 +46,7 @@ namespace TimeSheetManagement.Queries.GetListStudent
                     Name = s.Name,
                     Grade = s.Grade,
                     Review = s.Review,
+                    IsActive = s.IsActive,
                     ClassroomIds = classIdsByStudent.TryGetValue(s.Id, out var ids) ? ids : new List<Guid>()
                 }).ToList(),
                 Page = page,

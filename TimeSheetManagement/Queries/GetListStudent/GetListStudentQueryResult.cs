@@ -1,4 +1,4 @@
-﻿namespace TimeSheetManagement.Queries.GetListStudent
+namespace TimeSheetManagement.Queries.GetListStudent
 {
     public class GetListStudentQueryResult
     {
@@ -9,6 +9,8 @@
         public string Grade { get; set; } = string.Empty;
 
         public string Review {  get; set; } = string.Empty;
+
+        public bool IsActive { get; set; } = true;
 
         public List<Guid> ClassroomIds { get; set; } = new List<Guid>();
     }

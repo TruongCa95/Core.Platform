@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+using Domain.Enums;
 
 namespace TimeSheetManagement.DTO
 {
@@ -15,7 +15,7 @@ namespace TimeSheetManagement.DTO
 
         public int NumberOfStudent {  get; set; }
 
-        public LevelEnums Level { get; set; }
+        public int Level { get; set; }
 
         public decimal Allowance { get; set; }
 

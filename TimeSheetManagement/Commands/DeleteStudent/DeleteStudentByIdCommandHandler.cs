@@ -1,4 +1,4 @@
-﻿using Domain.Repositories;
+using Domain.Repositories;
 using MediatR;
 
 namespace TimeSheetManagement.Commands.DeleteStudent
@@ -23,17 +23,6 @@ namespace TimeSheetManagement.Commands.DeleteStudent
             student.IsActive = false;
             student.UpdatedDate = DateTime.UtcNow;
             await _unitOfWork.Students.UpdateAsync(student);
-
-            // Soft-delete the student's classroom enrolments so they are no longer
-            // counted or joined once the student is gone.
-            var enrolments = await _unitOfWork.StudentClasses
-                .GetListByConditionAsync(x => x.IsActive && x.StudentId == request.Id);
-            foreach (var enrolment in enrolments)
-            {
-                enrolment.IsActive = false;
-                enrolment.UpdatedDate = DateTime.UtcNow;
-                await _unitOfWork.StudentClasses.UpdateAsync(enrolment);
-            }
 
             await _unitOfWork.CompleteAsync();
             return true;

@@ -1,4 +1,4 @@
-﻿using Domain.Repositories;
+using Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimeSheetManagement.DTO;
@@ -120,7 +120,7 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                         Classcode = t.ClassCode,
                         Date = t.Date,
                         NumberOfStudent = t.NumberOfStudent,
-                        Level = t.Level,
+                        Level = (int)t.Level,
                         Salary = amount,
                         Allowance = allowance,
                         TotalSalary = amount + allowance,
