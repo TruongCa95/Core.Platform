@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using Domain.Entities.TimeSheet;
 using Domain.Repositories;
 using MediatR;
@@ -28,7 +28,8 @@ namespace TimeSheetManagement.Commands.CreateClassroom
                 NumberOfStudent = request.NumberOfStudent,
                 Location = request.Location,
                 Level = request.Level,
-                Status = request.Status
+                Status = request.Status,
+                Allowance = request.Allowance
             };
 
             await _unitOfWork.Classrooms.AddAsync(classroom);

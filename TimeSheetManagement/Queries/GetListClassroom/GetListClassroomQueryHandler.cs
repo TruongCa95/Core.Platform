@@ -1,4 +1,4 @@
-﻿using Domain.Repositories;
+using Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimeSheetManagement.Queries.GetListTimesheet;
@@ -39,7 +39,8 @@ namespace TimeSheetManagement.Queries.GetListClassroom
                     Location = x.Location,
                     NumberOfStudent = x.NumberOfStudent,
                     Level = (int)x.Level,
-                    Status = (int)x.Status
+                    Status = (int)x.Status,
+                    Allowance = x.Allowance
                 }).ToList(),
                 Page = page,
                 PageSize = pageSize,

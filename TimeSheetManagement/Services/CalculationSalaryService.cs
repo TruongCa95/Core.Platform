@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+using Domain.Enums;
 using Domain.Repositories;
 using TimeSheetManagement.DTO;
 
@@ -55,7 +55,7 @@ namespace TimeSheetManagement.Services
                 KiEnums.A => 1.25m,
                 KiEnums.BPlus => 1.1m,
                 KiEnums.C => 0.8m,
-                KiEnums.D => 0.5m,
+                KiEnums.D => 0.65m,
                 _ => 1.0m,
             };
         }

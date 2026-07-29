@@ -2,15 +2,19 @@ using Domain.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TimeSheetManagement.DTO;
+using TimeSheetManagement.Services;
 
 namespace TimeSheetManagement.Queries.GetListTimesheet
 {
     public class GetListTimesheetQueryHandler : IRequestHandler<GetListTimesheetQuery, PagedTimesheetResult>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public GetListTimesheetQueryHandler(IUnitOfWork unitOfWork)
+        private readonly ICalculationSalaryService _calculationSalaryService;
+
+        public GetListTimesheetQueryHandler(IUnitOfWork unitOfWork, ICalculationSalaryService calculationSalaryService)
         {
             _unitOfWork = unitOfWork;
+            _calculationSalaryService = calculationSalaryService;
         }
 
         public async Task<PagedTimesheetResult> Handle(GetListTimesheetQuery request, CancellationToken cancellationToken)
@@ -37,6 +41,7 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                                 t.tr.r.NumberOfStudent,
                                 Level = t.cls.Level,
                                 ClassCode = t.cls.ClassCode,
+                                Allowance = t.cls.Allowance,
                                 Reviews = revs.Select(r => new TimesheetReviewDTO
                                 {
                                     StudentId = r.StudentId,
@@ -48,6 +53,7 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                  .ToListAsync(cancellationToken);
 
             var salaries = await _unitOfWork.Salaries.GetListByConditionAsync(s => s.IsActive);
+            var monthlyKpis = await _unitOfWork.TeacherClassMonthlyKPIs.GetListByConditionAsync(k => k.IsActive);
 
             string? reqMonth = request.Month;
             int? reqYear = request.Year;
@@ -72,9 +78,6 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                     return monthMatch && yearMatch;
                 }).ToList();
             }
-            // If both are null/empty, do not filter: return all timesheets
-
-            // ... previous code ...
 
             var maxStudentByLevel = salaries
                 .GroupBy(s => s.Level)
@@ -83,7 +86,7 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                     g => g.Max(s => s.NumberOfStudent)
                 );
 
-            var result = timesheets
+            var resultList = timesheets
                 .Select(t =>
                 {
                     // Find all salary records for this level
@@ -92,10 +95,9 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
 
                     if (salaryList.Count > 0)
                     {
-                        int maxStudent = maxStudentByLevel[t.Level];
+                        int maxStudent = maxStudentByLevel.ContainsKey(t.Level) ? maxStudentByLevel[t.Level] : 0;
                         if (t.NumberOfStudent >= maxStudent)
                         {
-                            // Use the max salary for this level
                             amount = salaryList
                                 .Where(s => s.NumberOfStudent == maxStudent)
                                 .Select(s => s.Money)
@@ -103,7 +105,6 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                         }
                         else
                         {
-                            // Use the salary for the exact number of students
                             amount = salaryList
                                 .Where(s => s.NumberOfStudent == t.NumberOfStudent)
                                 .Select(s => s.Money)
@@ -111,7 +112,7 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                         }
                     }
 
-                    var allowance = t.ClassCode.StartsWith("VLB") ? 50000 : 0;
+                    var allowance = t.Allowance;
                     return new TimeSheetDTO
                     {
                         Id = t.TimesheetId,
@@ -127,22 +128,46 @@ namespace TimeSheetManagement.Queries.GetListTimesheet
                         Reviews = t.Reviews
                     };
                 })
-                .OrderByDescending(x => x.Date);
+                .OrderByDescending(x => x.Date)
+                .ToList();
 
-            var groupedResult = result
+            var groupedResult = resultList
                 .GroupBy(ts => new
                 {
                     Year = ts.Date.Year,
-                    Month = ts.Date.ToString("MMM yyyy")
+                    MonthInt = ts.Date.Month,
+                    MonthStr = ts.Date.ToString("MMM yyyy")
                 })
-                .Select(g => new TimesheetResult
+                .Select(g =>
                 {
-                    Month = g.Key.Month,
-                    TimeSheet = g.ToList(),
-                    AllowanceTotal = g.Sum(x => x.Allowance),
-                    GrossTotal = g.Sum(x => x.TotalSalary),
-                    TaxforCharity = g.Sum(x => x.Salary) * 2/100,
-                    NetTotal = g.Sum(x => x.TotalSalary) - (g.Sum(x => x.Salary) * 2 / 100)
+                    var year = g.Key.Year;
+                    var monthInt = g.Key.MonthInt;
+
+                    // Calculate total teaching salary with KPI factor for each class in this month
+                    decimal teachingSalaryWithKPI = 0;
+                    var classGroups = g.GroupBy(x => x.ClassroomId);
+                    foreach (var cg in classGroups)
+                    {
+                        var baseClassSalarySum = cg.Sum(x => x.Salary);
+                        var kpiRecord = monthlyKpis.FirstOrDefault(k => k.ClassroomId == cg.Key && k.Year == year && k.Month == monthInt);
+                        var kpiFactor = kpiRecord != null ? _calculationSalaryService.CalculateKi(kpiRecord.KPI) : 1.0m;
+                        teachingSalaryWithKPI += baseClassSalarySum * kpiFactor;
+                    }
+
+                    decimal allowanceTotal = g.Sum(x => x.Allowance);
+                    decimal grossTotal = teachingSalaryWithKPI + allowanceTotal;
+                    decimal taxforCharity = Math.Round(teachingSalaryWithKPI * 0.02m, 2);
+                    decimal netTotal = grossTotal - taxforCharity;
+
+                    return new TimesheetResult
+                    {
+                        Month = g.Key.MonthStr,
+                        TimeSheet = g.ToList(),
+                        AllowanceTotal = allowanceTotal,
+                        GrossTotal = grossTotal,
+                        TaxforCharity = taxforCharity,
+                        NetTotal = netTotal
+                    };
                 })
                 .ToList();
 

@@ -1,4 +1,4 @@
-﻿using Infrastructure.Command;
+using Infrastructure.Command;
 using Infrastructure.Query;
 using Microsoft.AspNetCore.Mvc;
 using TimeSheetManagement.Commands.CreateBaseSalary;
@@ -81,13 +81,20 @@ namespace Core.Platform.Controllers
         }
 
         [HttpGet("Students")]
-        public async Task<ActionResult<PagedResult<GetListStudentQueryResult>>> GetStudents([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null)
+        public async Task<ActionResult<PagedResult<GetListStudentQueryResult>>> GetStudents(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] string? search = null,
+            [FromQuery] bool? isActive = null,
+            [FromQuery] Guid? classroomId = null)
         {
             var result = await _query.Send(new GetListStudentQuery
             {
                 Page = page,
                 PageSize = pageSize,
-                Search = search
+                Search = search,
+                IsActive = isActive,
+                ClassroomId = classroomId
             });
             if (result == null || !result.Items.Any())
             {
@@ -176,6 +183,105 @@ namespace Core.Platform.Controllers
         {
             var id = await _command.Send(command);
             return Ok(id);
+        }
+
+        [HttpGet("KPI")]
+        public async Task<ActionResult<List<TimeSheetManagement.DTO.TeacherClassMonthlyKPIDTO>>> GetMonthlyKPIs(
+            [FromQuery] Guid? classroomId,
+            [FromQuery] int? year,
+            [FromQuery] int? month)
+        {
+            var result = await _query.Send(new TimeSheetManagement.Queries.GetListTeacherClassMonthlyKPI.GetListTeacherClassMonthlyKPIQuery
+            {
+                ClassroomId = classroomId,
+                Year = year,
+                Month = month
+            });
+            return Ok(result ?? new List<TimeSheetManagement.DTO.TeacherClassMonthlyKPIDTO>());
+        }
+
+        [HttpPost("KPI")]
+        public async Task<IActionResult> UpsertMonthlyKPI([FromBody] TimeSheetManagement.Commands.UpsertTeacherClassMonthlyKPI.UpsertTeacherClassMonthlyKPICommand command)
+        {
+            var id = await _command.Send(command);
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Chỉ được đánh giá KPI cho các lớp học có trạng thái Hoạt động.");
+            }
+            return Ok(id);
+        }
+
+        [HttpDelete("KPI/{id}")]
+        public async Task<IActionResult> DeleteMonthlyKPI([FromRoute] Guid id)
+        {
+            var result = await _command.Send(new TimeSheetManagement.Commands.DeleteTeacherClassMonthlyKPI.DeleteTeacherClassMonthlyKPICommand { Id = id });
+            return result ? Ok(true) : NotFound();
+        }
+
+        // KPI Criteria Endpoints
+        [HttpGet("KPI/Criteria")]
+        public async Task<IActionResult> GetKPICriteria()
+        {
+            var result = await _query.Send(new TimeSheetManagement.Queries.GetListKPICriteria.GetListKPICriteriaQuery());
+            return Ok(result ?? new List<TimeSheetManagement.DTO.KPICriteriaDTO>());
+        }
+
+        [HttpPost("KPI/Criteria")]
+        public async Task<IActionResult> UpsertKPICriteria([FromBody] TimeSheetManagement.Commands.UpsertKPICriteria.UpsertKPICriteriaCommand command)
+        {
+            var id = await _command.Send(command);
+            return Ok(id);
+        }
+
+        [HttpDelete("KPI/Criteria/{id}")]
+        public async Task<IActionResult> DeleteKPICriteria([FromRoute] Guid id)
+        {
+            var result = await _command.Send(new TimeSheetManagement.Commands.DeleteKPICriteria.DeleteKPICriteriaCommand(id));
+            return result ? Ok(true) : NotFound();
+        }
+
+        // KPI Scale Endpoints
+        [HttpGet("KPI/Scales")]
+        public async Task<IActionResult> GetKPIScales()
+        {
+            var result = await _query.Send(new TimeSheetManagement.Queries.GetListKPIScale.GetListKPIScaleQuery());
+            return Ok(result ?? new List<TimeSheetManagement.DTO.KPIScaleDTO>());
+        }
+
+        [HttpPost("KPI/Scales")]
+        public async Task<IActionResult> UpsertKPIScale([FromBody] TimeSheetManagement.Commands.UpsertKPIScale.UpsertKPIScaleCommand command)
+        {
+            var id = await _command.Send(command);
+            return Ok(id);
+        }
+
+        [HttpDelete("KPI/Scales/{id}")]
+        public async Task<IActionResult> DeleteKPIScale([FromRoute] Guid id)
+        {
+            var result = await _command.Send(new TimeSheetManagement.Commands.DeleteKPIScale.DeleteKPIScaleCommand(id));
+            return result ? Ok(true) : NotFound();
+        }
+
+        // Salary Configuration Endpoints
+        [HttpGet("Salaries")]
+        public async Task<IActionResult> GetSalaries()
+        {
+            var result = await _query.Send(new TimeSheetManagement.Queries.GetListSalary.GetListSalaryQuery());
+            return Ok(result ?? new List<TimeSheetManagement.DTO.SalaryDTO>());
+        }
+
+        [HttpPost("Salaries")]
+        public async Task<IActionResult> UpsertSalary([FromBody] TimeSheetManagement.Commands.UpsertSalary.UpsertSalaryCommand command)
+        {
+            var id = await _command.Send(command);
+            return Ok(id);
+        }
+
+        [HttpDelete("Salaries/{id}")]
+        public async Task<IActionResult> DeleteSalary([FromRoute] Guid id)
+        {
+            var result = await _command.Send(new TimeSheetManagement.Commands.DeleteSalary.DeleteSalaryCommand(id));
+            return result ? Ok(true) : NotFound();
         }
     }
 }

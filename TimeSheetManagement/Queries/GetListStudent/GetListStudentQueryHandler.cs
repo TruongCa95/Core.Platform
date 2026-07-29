@@ -18,6 +18,20 @@ namespace TimeSheetManagement.Queries.GetListStudent
                 .OrderByDescending(x => x.CreatedDate)
                 .AsQueryable();
 
+            if (request.IsActive.HasValue)
+            {
+                query = query.Where(x => x.IsActive == request.IsActive.Value);
+            }
+
+            if (request.ClassroomId.HasValue && request.ClassroomId.Value != Guid.Empty)
+            {
+                var targetClassId = request.ClassroomId.Value;
+                var studentIdsInClass = _unitOfWork.StudentClasses
+                    .GetListByCondition(sc => sc.ClassId == targetClassId && sc.IsActive)
+                    .Select(sc => sc.StudentId);
+                query = query.Where(x => studentIdsInClass.Contains(x.Id));
+            }
+
             if (!string.IsNullOrWhiteSpace(request.Search))
             {
                 var search = request.Search.Trim();

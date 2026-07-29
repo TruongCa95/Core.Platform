@@ -1,4 +1,4 @@
-﻿using Domain.Repositories;
+using Domain.Repositories;
 using MediatR;
 using System.Data;
 
@@ -38,6 +38,7 @@ namespace TimeSheetManagement.Commands.UpdateClassrooms
             classroom.NumberOfStudent = request.NumberOfStudent;
             classroom.Level = request.Level;
             classroom.Status = request.Status;
+            classroom.Allowance = request.Allowance;
             classroom.UpdatedDate = DateTime.UtcNow;
 
             await _unitOfWork.Classrooms.UpdateAsync(classroom);

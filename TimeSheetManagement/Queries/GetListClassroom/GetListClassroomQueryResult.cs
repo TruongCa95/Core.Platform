@@ -1,4 +1,4 @@
-﻿namespace TimeSheetManagement.Queries.GetListClassroom
+namespace TimeSheetManagement.Queries.GetListClassroom
 {
     public class GetListClassroomQueryResult
     {
@@ -16,5 +16,6 @@
 
         public int Status { get; set; }
 
+        public decimal Allowance { get; set; }
     }
 }

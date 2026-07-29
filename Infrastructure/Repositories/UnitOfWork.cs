@@ -1,4 +1,4 @@
-﻿using Domain.Entities.TimeSheet;
+using Domain.Entities.TimeSheet;
 using Domain.Repositories;
 using Infrastructure.Database;
 
@@ -14,6 +14,9 @@ namespace Infrastructure.Repositories
         private IRepository<Salary> _salaryRepository;
         private IRepository<TimesheetReview> _timesheetReviewRepository;
         private IRepository<StudentClasses> _studentClassesRepository;
+        private IRepository<TeacherClassMonthlyKPI> _teacherClassMonthlyKpiRepository;
+        private IRepository<KPICriteria> _kpiCriteriaRepository;
+        private IRepository<KPIScale> _kpiScaleRepository;
 
         public UnitOfWork(MySqlDBContext context, 
             IRepository<TimeSheet> timeSheetRepository,
@@ -22,7 +25,10 @@ namespace Infrastructure.Repositories
             IRepository<Students> studentRepository,
             IRepository<Salary> salaryRepository,
             IRepository<TimesheetReview> timesheetReviewRepository,
-            IRepository<StudentClasses> studentClassesRepository)
+            IRepository<StudentClasses> studentClassesRepository,
+            IRepository<TeacherClassMonthlyKPI>? teacherClassMonthlyKpiRepository = null,
+            IRepository<KPICriteria>? kpiCriteriaRepository = null,
+            IRepository<KPIScale>? kpiScaleRepository = null)
         {
             _context = context;
             _timeSheetRepository = timeSheetRepository;
@@ -32,6 +38,9 @@ namespace Infrastructure.Repositories
             _classroomTimesheetRepository = classroomTimesheetRepository;
             _timesheetReviewRepository = timesheetReviewRepository;
             _studentClassesRepository = studentClassesRepository;
+            _teacherClassMonthlyKpiRepository = teacherClassMonthlyKpiRepository ?? new Repository<TeacherClassMonthlyKPI>(_context);
+            _kpiCriteriaRepository = kpiCriteriaRepository ?? new Repository<KPICriteria>(_context);
+            _kpiScaleRepository = kpiScaleRepository ?? new Repository<KPIScale>(_context);
         }
 
         public IRepository<TimeSheet> TimeSheets
@@ -87,6 +96,30 @@ namespace Infrastructure.Repositories
             get
             {
                 return _studentClassesRepository ??= new Repository<StudentClasses>(_context);
+            }
+        }
+
+        public IRepository<TeacherClassMonthlyKPI> TeacherClassMonthlyKPIs
+        {
+            get
+            {
+                return _teacherClassMonthlyKpiRepository ??= new Repository<TeacherClassMonthlyKPI>(_context);
+            }
+        }
+
+        public IRepository<KPICriteria> KPICriterias
+        {
+            get
+            {
+                return _kpiCriteriaRepository ??= new Repository<KPICriteria>(_context);
+            }
+        }
+
+        public IRepository<KPIScale> KPIScales
+        {
+            get
+            {
+                return _kpiScaleRepository ??= new Repository<KPIScale>(_context);
             }
         }
 

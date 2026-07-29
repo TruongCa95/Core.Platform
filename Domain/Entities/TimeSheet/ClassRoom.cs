@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+using Domain.Enums;
 
 namespace Domain.Entities.TimeSheet
 {
@@ -15,6 +15,8 @@ namespace Domain.Entities.TimeSheet
         public LevelEnums Level { get; set; }
 
         public ClassRoomStatusEnums Status { get; set; } = ClassRoomStatusEnums.Active;
+
+        public decimal Allowance { get; set; } = 0;
 
         public ICollection<TimeSheet> TimeSheets { get; set; } = new List<TimeSheet>();
 

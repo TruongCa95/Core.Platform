@@ -16,7 +16,7 @@ namespace TimeSheetManagement.Tests
         [InlineData(KiEnums.BPlus, 1.1)]
         [InlineData(KiEnums.B, 1.0)]   // B has no explicit case -> default multiplier
         [InlineData(KiEnums.C, 0.8)]
-        [InlineData(KiEnums.D, 0.5)]
+        [InlineData(KiEnums.D, 0.65)]
         public void CalculateKi_ReturnsExpectedMultiplier(KiEnums ki, double expected)
         {
             var result = _service.CalculateKi(ki);

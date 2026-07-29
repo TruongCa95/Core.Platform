@@ -1,4 +1,4 @@
-﻿using Domain.Entities.TimeSheet;
+using Domain.Entities.TimeSheet;
 using Domain.Repositories;
 using MediatR;
 
@@ -25,6 +25,7 @@ namespace TimeSheetManagement.Queries.GetListClassroom
                 ClassName = classroom.ClassName,
                 NumberOfStudent = classroom.NumberOfStudent,
                 Status = (int)classroom.Status,
+                Allowance = classroom.Allowance,
             };
         }
     }

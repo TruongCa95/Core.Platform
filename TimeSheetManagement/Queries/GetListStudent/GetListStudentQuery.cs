@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using TimeSheetManagement.Queries.GetListTimesheet;
 
 namespace TimeSheetManagement.Queries.GetListStudent
@@ -10,5 +10,9 @@ namespace TimeSheetManagement.Queries.GetListStudent
         public int PageSize { get; set; } = 20;
 
         public string? Search { get; set; }
+
+        public bool? IsActive { get; set; }
+
+        public Guid? ClassroomId { get; set; }
     }
 }

@@ -28,6 +28,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<decimal>("Allowance")
+                        .HasColumnType("decimal(65,30)");
+
                     b.Property<string>("ClassCode")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -110,6 +113,405 @@ namespace Infrastructure.Migrations
                     b.HasIndex("TimeSheetId");
 
                     b.ToTable("ClassRoomTimeSheets", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.TimeSheet.KPICriteria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Criteria")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Point")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KPICriterias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Thầy giáo của ITS chỉ đạo, hướng dẫn học sinh có thành tích đặc biệt xuất sắc ở các cuộc thi của Trường, của Quốc gia",
+                            DisplayOrder = 1,
+                            IsActive = true,
+                            Point = "+40đ",
+                            Type = "plus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Thầy giáo có đóng góp về góp ý, ý tưởng, tham gia trực tiếp hiện thực hóa ý tưởng đạt hiệu quả vượt bậc",
+                            DisplayOrder = 2,
+                            IsActive = true,
+                            Point = "+40đ",
+                            Type = "plus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000003"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Thầy giáo có những cống hiến quên mình vì sự phát triển của Tổ chức được quản lý trực tiếp đánh giá xuất sắc / đề xuất từ quản lý trực tiếp",
+                            DisplayOrder = 3,
+                            IsActive = true,
+                            Point = "+40đ",
+                            Type = "plus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000004"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp không có học sinh ở dưới điểm 9 trong các bài kiểm tra, điểm thi học kỳ trên trường",
+                            DisplayOrder = 4,
+                            IsActive = true,
+                            Point = "+25đ",
+                            Type = "plus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000005"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Phụ huynh ý kiến khen / giới thiệu thêm học sinh cho lớp / trung tâm",
+                            DisplayOrder = 5,
+                            IsActive = true,
+                            Point = "+15đ",
+                            Type = "plus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000006"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Đi dạy đầy đủ 100% các buổi dạy được phân công trong tháng",
+                            DisplayOrder = 6,
+                            IsActive = true,
+                            Point = "+5đ",
+                            Type = "plus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000007"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp không có học sinh ở dưới điểm 8 trong các bài kiểm tra",
+                            DisplayOrder = 7,
+                            IsActive = true,
+                            Point = "+10đ",
+                            Type = "plus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000008"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp có trên 80% học sinh điểm thi trên 8",
+                            DisplayOrder = 8,
+                            IsActive = true,
+                            Point = "+10đ",
+                            Type = "plus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000009"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp có 1 hoặc 2 học sinh có điểm kiểm tra / thi từ 7 đến < 8 điểm",
+                            DisplayOrder = 9,
+                            IsActive = true,
+                            Point = "-5đ",
+                            Type = "minus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000010"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp có 3 hoặc 4 học sinh có điểm kiểm tra / thi từ 7 đến < 8 điểm",
+                            DisplayOrder = 10,
+                            IsActive = true,
+                            Point = "-10đ",
+                            Type = "minus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000011"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Từ chối dạy những buổi theo lịch đã đăng ký",
+                            DisplayOrder = 11,
+                            IsActive = true,
+                            Point = "-10đ",
+                            Type = "minus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000012"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp có 5 hoặc 6 bạn học sinh có điểm kiểm tra / thi từ 7 đến < 8 điểm",
+                            DisplayOrder = 12,
+                            IsActive = true,
+                            Point = "-15đ",
+                            Type = "minus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000013"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp có 1 hoặc 2 học sinh có điểm kiểm tra / thi từ 6 đến < 7 điểm",
+                            DisplayOrder = 13,
+                            IsActive = true,
+                            Point = "-10đ",
+                            Type = "minus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000014"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp có 3 hoặc 4 học sinh có điểm kiểm tra / thi từ 6 đến < 7 điểm",
+                            DisplayOrder = 14,
+                            IsActive = true,
+                            Point = "-15đ",
+                            Type = "minus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000015"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp có 5 hoặc 6 bạn học sinh có điểm kiểm tra / thi từ 6 đến < 7 điểm",
+                            DisplayOrder = 15,
+                            IsActive = true,
+                            Point = "-20đ",
+                            Type = "minus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000016"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Criteria = "Lớp có bạn học sinh có điểm kiểm tra / thi < 6 điểm",
+                            DisplayOrder = 16,
+                            IsActive = true,
+                            Point = "-40đ",
+                            Type = "minus",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.TimeSheet.KPIScale", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Factor")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Grade")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Score")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KPIScales");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000101"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Xuất sắc vượt bậc",
+                            DisplayOrder = 1,
+                            Factor = 1.4m,
+                            Grade = "Ki A*",
+                            IsActive = true,
+                            Score = "140đ",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000102"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Xuất sắc",
+                            DisplayOrder = 2,
+                            Factor = 1.25m,
+                            Grade = "Ki A",
+                            IsActive = true,
+                            Score = "125đ",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000103"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Khá giỏi",
+                            DisplayOrder = 3,
+                            Factor = 1.1m,
+                            Grade = "Ki B+",
+                            IsActive = true,
+                            Score = "110đ",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000104"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Đạt chuẩn (Mặc định)",
+                            DisplayOrder = 4,
+                            Factor = 1.0m,
+                            Grade = "Ki B",
+                            IsActive = true,
+                            Score = "100đ",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000105"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Cần cố gắng",
+                            DisplayOrder = 5,
+                            Factor = 0.9m,
+                            Grade = "Ki C+",
+                            IsActive = true,
+                            Score = "90đ",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000106"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Chưa đạt",
+                            DisplayOrder = 6,
+                            Factor = 0.8m,
+                            Grade = "Ki C",
+                            IsActive = true,
+                            Score = "80đ",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000107"),
+                            CreatedBy = "",
+                            CreatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Vi phạm / Kém",
+                            DisplayOrder = 7,
+                            Factor = 0.65m,
+                            Grade = "Ki D",
+                            IsActive = true,
+                            Score = "60đ",
+                            UpdatedBy = "",
+                            UpdatedDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.TimeSheet.Salary", b =>
@@ -225,6 +627,53 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TimeSheet.TeacherClassMonthlyKPI", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ClassroomId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("KPI")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassroomId", "Year", "Month")
+                        .IsUnique();
+
+                    b.ToTable("TeacherClassMonthlyKPIs");
                 });
 
             modelBuilder.Entity("Domain.Entities.TimeSheet.TimeSheet", b =>
@@ -343,6 +792,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("ClassRoom");
 
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TimeSheet.TeacherClassMonthlyKPI", b =>
+                {
+                    b.HasOne("Domain.Entities.TimeSheet.ClassRoom", "ClassRoom")
+                        .WithMany()
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassRoom");
                 });
 
             modelBuilder.Entity("Domain.Entities.TimeSheet.TimesheetReview", b =>

@@ -1,4 +1,4 @@
-﻿using Domain.Entities.TimeSheet;
+using Domain.Entities.TimeSheet;
 
 namespace Domain.Repositories
 {
@@ -11,6 +11,9 @@ namespace Domain.Repositories
         IRepository<Salary> Salaries { get; }
         IRepository<TimesheetReview> TimesheetReviews { get; }
         IRepository<StudentClasses> StudentClasses { get; }
+        IRepository<TeacherClassMonthlyKPI> TeacherClassMonthlyKPIs { get; }
+        IRepository<KPICriteria> KPICriterias { get; }
+        IRepository<KPIScale> KPIScales { get; }
         Task<int> CompleteAsync();
     }
 }

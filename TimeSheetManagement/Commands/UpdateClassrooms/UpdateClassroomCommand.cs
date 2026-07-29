@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+using Domain.Enums;
 using MediatR;
 
 namespace TimeSheetManagement.Commands.UpdateClassrooms
@@ -18,5 +18,7 @@ namespace TimeSheetManagement.Commands.UpdateClassrooms
         public LevelEnums Level { get; set; }
 
         public ClassRoomStatusEnums Status { get; set; } = ClassRoomStatusEnums.Active;
+
+        public decimal Allowance { get; set; } = 0;
     }
 }

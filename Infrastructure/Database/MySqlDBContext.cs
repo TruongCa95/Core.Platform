@@ -1,4 +1,5 @@
-﻿using Domain.Entities.TimeSheet;
+using Domain.Entities.TimeSheet;
+using Infrastructure.Database.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database
@@ -21,8 +22,22 @@ namespace Infrastructure.Database
 
         public DbSet<TimesheetReview> TimesheetReviews { get; set; }
 
+        public DbSet<TeacherClassMonthlyKPI> TeacherClassMonthlyKPIs { get; set; }
+
+        public DbSet<KPICriteria> KPICriterias { get; set; }
+
+        public DbSet<KPIScale> KPIScales { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TeacherClassMonthlyKPI>(entity =>
+            {
+                entity.HasIndex(e => new { e.ClassroomId, e.Year, e.Month }).IsUnique();
+                entity.HasOne(e => e.ClassRoom)
+                      .WithMany()
+                      .HasForeignKey(e => e.ClassroomId);
+            });
+
             modelBuilder.Entity<ClassRoom>()
              .HasMany(c => c.TimeSheets)
              .WithMany(t => t.ClassRooms)
@@ -62,6 +77,8 @@ namespace Infrastructure.Database
                      .HasForeignKey(sc => sc.StudentId),
                  j => j.ToTable("StudentClasses")
              );
+
+            modelBuilder.SeedKPICriteriaAndScales();
         }
     }
 }
