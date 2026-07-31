@@ -38,20 +38,12 @@ namespace Infrastructure.Database
                       .HasForeignKey(e => e.ClassroomId);
             });
 
-            modelBuilder.Entity<ClassRoom>()
-             .HasMany(c => c.TimeSheets)
-             .WithMany(t => t.ClassRooms)
-             .UsingEntity<ClassRoomTimeSheet>(
-                 j => j
-                     .HasOne(ct => ct.TimeSheet)
-                     .WithMany()
-                     .HasForeignKey(ct => ct.TimeSheetId),
-                 j => j
-                     .HasOne(ct => ct.ClassRoom)
-                     .WithMany()
-                     .HasForeignKey(ct => ct.ClassRoomId),
-                 j => j.ToTable("ClassRoomTimeSheets")
-             );
+            modelBuilder.Entity<ClassRoomTimeSheet>(ct =>
+            {
+                ct.ToTable("ClassRoomTimeSheets");
+                ct.HasOne(x => x.TimeSheet).WithMany().HasForeignKey(x => x.TimeSheetId);
+                ct.HasOne(x => x.ClassRoom).WithMany().HasForeignKey(x => x.ClassRoomId);
+            });
 
             modelBuilder.Entity<Salary>()
             .Property(p => p.Money)
@@ -63,20 +55,12 @@ namespace Infrastructure.Database
             .HasColumnType("decimal(18,2)")
             .IsRequired(false);
 
-            modelBuilder.Entity<Students>()
-             .HasMany(s => s.ClassRooms)
-             .WithMany(c => c.Students)
-             .UsingEntity<StudentClasses>(
-                 j => j
-                     .HasOne(sc => sc.ClassRoom)
-                     .WithMany()
-                     .HasForeignKey(sc => sc.ClassId),
-                 j => j
-                     .HasOne(sc => sc.Students)
-                     .WithMany()
-                     .HasForeignKey(sc => sc.StudentId),
-                 j => j.ToTable("StudentClasses")
-             );
+            modelBuilder.Entity<StudentClasses>(sc =>
+            {
+                sc.ToTable("StudentClasses");
+                sc.HasOne(x => x.ClassRoom).WithMany().HasForeignKey(x => x.ClassId);
+                sc.HasOne(x => x.Students).WithMany().HasForeignKey(x => x.StudentId);
+            });
 
             modelBuilder.SeedKPICriteriaAndScales();
         }

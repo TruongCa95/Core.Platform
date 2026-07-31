@@ -1,7 +1,9 @@
-﻿using System.Data;
+using System.Data;
+using System.Data.Common;
 using System.Net;
 using System.Text.Json;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 public class ErrorHandlingMiddleware
 {
@@ -58,7 +60,18 @@ public class ErrorHandlingMiddleware
                 message = notfoundEx.Message ?? "Record not found.";
                 break;
 
+            case DbUpdateException dbUpdateEx:
+                statusCode = HttpStatusCode.BadRequest; // 400
+                message = dbUpdateEx.InnerException?.Message ?? dbUpdateEx.Message;
+                break;
+
+            case DbException dbEx:
+                statusCode = HttpStatusCode.BadRequest; // 400
+                message = dbEx.Message;
+                break;
+
             default:
+                message = exception.Message;
                 break;
         }
 

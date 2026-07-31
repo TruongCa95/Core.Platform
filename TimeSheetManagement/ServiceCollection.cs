@@ -2,17 +2,13 @@ using Domain.Entities.TimeSheet;
 using Domain.Repositories;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using TimeSheetManagement.Services;
-using FluentValidation;
-using TimeSheetManagement.Validators;
 
 namespace TimeSheetManagement
 {
     public static class ServiceCollection
     {
-        public static IServiceCollection RegisterServices (this IServiceCollection services)
+        public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
-            services.AddScoped<ICalculationSalaryService, CalculationSalaryService>();
             services.AddScoped<IRepository<TimeSheet>, Repository<TimeSheet>>();
             services.AddScoped<IRepository<Students>, Repository<Students>>();
             services.AddScoped<IRepository<ClassRoom>, Repository<ClassRoom>>();
@@ -24,7 +20,6 @@ namespace TimeSheetManagement
             services.AddScoped<IRepository<KPICriteria>, Repository<KPICriteria>>();
             services.AddScoped<IRepository<KPIScale>, Repository<KPIScale>>();
 
-            services.AddValidatorsFromAssemblyContaining<CreateBaseSalaryCommandValidator>();
             return services;
         }
     }

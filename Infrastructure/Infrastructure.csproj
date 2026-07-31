@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -24,7 +24,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Modules\Auth\Auth.csproj" />
+    <ProjectReference Include="..\Modules\Student\Student.csproj" />
+    <ProjectReference Include="..\Modules\Teacher\Teacher.csproj" />
+    <ProjectReference Include="..\Modules\Classroom\Classroom.csproj" />
+    <ProjectReference Include="..\Modules\Course\Course.csproj" />
+    <ProjectReference Include="..\Modules\Timesheet\Timesheet.csproj" />
+    <ProjectReference Include="..\Modules\Payroll\Payroll.csproj" />
+    <ProjectReference Include="..\Modules\Notification\Notification.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,3 @@
-﻿using System.Reflection;
 using TimeSheetManagement.Behaviors;
 
 namespace Core.Platform
@@ -9,7 +8,12 @@ namespace Core.Platform
         {
             services.AddMediatR(cfg =>
             {
-                cfg.RegisterServicesFromAssembly(Assembly.Load("TimeSheetManagement"));
+                cfg.RegisterServicesFromAssemblies(
+                    typeof(Modules.Student.Infrastructure.StudentModule).Assembly,
+                    typeof(Modules.Classroom.Infrastructure.ClassroomModule).Assembly,
+                    typeof(Modules.Timesheet.Infrastructure.TimesheetModule).Assembly,
+                    typeof(Modules.Payroll.Infrastructure.PayrollModule).Assembly
+                );
                 cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
             return services;
