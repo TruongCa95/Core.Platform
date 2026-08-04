@@ -1,3 +1,4 @@
+using BuildingBlocks.Security;
 using Infrastructure.Command;
 using Infrastructure.Query;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPost]
+        [HasPermission(PermissionCatalog.Timesheet.Dashboard.Write)]
         public async Task<IActionResult> CreateTimeSheet([FromBody] CreateTimesheetCommand command)
         {
             var id = await _command.Send(command);
@@ -38,6 +40,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpGet()]
+        [HasPermission(PermissionCatalog.Timesheet.Dashboard.View)]
         public async Task<ActionResult<PagedTimesheetResult>> GetTimeSheets([FromQuery] string? month, [FromQuery] int? year, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
             var result = await _query.Send(new GetListTimesheetQuery
@@ -55,6 +58,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPut("{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Dashboard.Write)]
         public async Task<IActionResult> UpdateTimeSheet([FromRoute] Guid id, [FromBody] UpdateTimesheetCommand command)
         {
             if (command.Id == Guid.Empty)
@@ -67,6 +71,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpDelete("{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Dashboard.Write)]
         public async Task<IActionResult> DeleteTimeSheet([FromRoute] Guid id)
         {
             var result = await _command.Send(new DeleteTimesheetByIdCommand { Id = id });
@@ -74,6 +79,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPost("Students")]
+        [HasPermission(PermissionCatalog.Timesheet.Student.Write)]
         public async Task<IActionResult> CreateStudent([FromBody] CreateStudentCommand command)
         {
             var id = await _command.Send(command);
@@ -81,6 +87,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpGet("Students")]
+        [HasPermission(PermissionCatalog.Timesheet.Student.View)]
         public async Task<ActionResult<PagedResult<GetListStudentQueryResult>>> GetStudents(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 20,
@@ -104,6 +111,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPut("Students/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Student.Write)]
         public async Task<IActionResult> UpdateStudent([FromRoute] Guid id, [FromBody] UpdateStudentCommand command)
         {
             if (command.Id == Guid.Empty)
@@ -116,6 +124,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpDelete("Students/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Student.Write)]
         public async Task<IActionResult> DeleteStudent([FromRoute] Guid id)
         {
             var result = await _command.Send(new DeleteStudentByIdCommand { Id = id });
@@ -123,6 +132,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPost("Classrooms")]
+        [HasPermission(PermissionCatalog.Timesheet.Classroom.Write)]
         public async Task<IActionResult> CreateClassroom([FromBody] CreateClassroomCommand command)
         {
             var id = await _command.Send(command);
@@ -130,6 +140,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpGet("Classrooms")]
+        [HasPermission(PermissionCatalog.Timesheet.Classroom.View)]
         public async Task<ActionResult<PagedResult<GetListClassroomQueryResult>>> GetClassrooms([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null)
         {
             var result = await _query.Send(new GetListClassroomQuery
@@ -146,6 +157,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpGet("Classrooms/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Classroom.View)]
         public async Task<ActionResult<GetClassroomQueryResult>> GetClassrooms([FromRoute] Guid id)
         {
             var result = await _query.Send(new GetClassroomQuery
@@ -160,6 +172,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPut("Classrooms/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Classroom.Write)]
         public async Task<IActionResult> UpdateClassroom([FromRoute] Guid id, [FromBody] UpdateClassroomCommand command)
         {
             if (command.Id == Guid.Empty)
@@ -172,6 +185,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpDelete("Classrooms/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Classroom.Write)]
         public async Task<IActionResult> DeleteClassroom([FromRoute] Guid id)
         {
             var result = await _command.Send(new DeleteClassroomByIdCommand { Id = id });
@@ -179,6 +193,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPost("Salary")]
+        [HasPermission(PermissionCatalog.Timesheet.Salary.Write)]
         public async Task<IActionResult> CreateSalary([FromBody] CreateBaseSalaryCommand command)
         {
             var id = await _command.Send(command);
@@ -186,6 +201,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpGet("KPI")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.View)]
         public async Task<ActionResult<List<TimeSheetManagement.DTO.TeacherClassMonthlyKPIDTO>>> GetMonthlyKPIs(
             [FromQuery] Guid? classroomId,
             [FromQuery] int? year,
@@ -201,6 +217,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPost("KPI")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.Write)]
         public async Task<IActionResult> UpsertMonthlyKPI([FromBody] TimeSheetManagement.Commands.UpsertTeacherClassMonthlyKPI.UpsertTeacherClassMonthlyKPICommand command)
         {
             var id = await _command.Send(command);
@@ -212,6 +229,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpDelete("KPI/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.Write)]
         public async Task<IActionResult> DeleteMonthlyKPI([FromRoute] Guid id)
         {
             var result = await _command.Send(new TimeSheetManagement.Commands.DeleteTeacherClassMonthlyKPI.DeleteTeacherClassMonthlyKPICommand { Id = id });
@@ -220,6 +238,7 @@ namespace Core.Platform.Controllers
 
         // KPI Criteria Endpoints
         [HttpGet("KPI/Criteria")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.View)]
         public async Task<IActionResult> GetKPICriteria()
         {
             var result = await _query.Send(new TimeSheetManagement.Queries.GetListKPICriteria.GetListKPICriteriaQuery());
@@ -227,6 +246,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPost("KPI/Criteria")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.Write)]
         public async Task<IActionResult> UpsertKPICriteria([FromBody] TimeSheetManagement.Commands.UpsertKPICriteria.UpsertKPICriteriaCommand command)
         {
             var id = await _command.Send(command);
@@ -234,6 +254,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpDelete("KPI/Criteria/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.Write)]
         public async Task<IActionResult> DeleteKPICriteria([FromRoute] Guid id)
         {
             var result = await _command.Send(new TimeSheetManagement.Commands.DeleteKPICriteria.DeleteKPICriteriaCommand(id));
@@ -242,6 +263,7 @@ namespace Core.Platform.Controllers
 
         // KPI Scale Endpoints
         [HttpGet("KPI/Scales")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.View)]
         public async Task<IActionResult> GetKPIScales()
         {
             var result = await _query.Send(new TimeSheetManagement.Queries.GetListKPIScale.GetListKPIScaleQuery());
@@ -249,6 +271,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPost("KPI/Scales")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.Write)]
         public async Task<IActionResult> UpsertKPIScale([FromBody] TimeSheetManagement.Commands.UpsertKPIScale.UpsertKPIScaleCommand command)
         {
             var id = await _command.Send(command);
@@ -256,6 +279,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpDelete("KPI/Scales/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Kpi.Write)]
         public async Task<IActionResult> DeleteKPIScale([FromRoute] Guid id)
         {
             var result = await _command.Send(new TimeSheetManagement.Commands.DeleteKPIScale.DeleteKPIScaleCommand(id));
@@ -264,6 +288,7 @@ namespace Core.Platform.Controllers
 
         // Salary Configuration Endpoints
         [HttpGet("Salaries")]
+        [HasPermission(PermissionCatalog.Timesheet.Salary.View)]
         public async Task<IActionResult> GetSalaries()
         {
             var result = await _query.Send(new TimeSheetManagement.Queries.GetListSalary.GetListSalaryQuery());
@@ -271,6 +296,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpPost("Salaries")]
+        [HasPermission(PermissionCatalog.Timesheet.Salary.Write)]
         public async Task<IActionResult> UpsertSalary([FromBody] TimeSheetManagement.Commands.UpsertSalary.UpsertSalaryCommand command)
         {
             var id = await _command.Send(command);
@@ -278,6 +304,7 @@ namespace Core.Platform.Controllers
         }
 
         [HttpDelete("Salaries/{id}")]
+        [HasPermission(PermissionCatalog.Timesheet.Salary.Write)]
         public async Task<IActionResult> DeleteSalary([FromRoute] Guid id)
         {
             var result = await _command.Send(new TimeSheetManagement.Commands.DeleteSalary.DeleteSalaryCommand(id));

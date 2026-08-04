@@ -44,6 +44,7 @@ builder.Services.RegisterServices();
 builder.Services.AddScoped<ITenantContext, TenantContext>();
 
 // Permission-Based Authorization
+builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
